@@ -1,7 +1,7 @@
-SUMMARY = "openATV bootlogo"
+SUMMARY = "openBH bootlogo"
 SECTION = "base"
 PRIORITY = "required"
-MAINTAINER = "openATV Team"
+MAINTAINER = "openBH Team"
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 require conf/license/license-gplv2.inc

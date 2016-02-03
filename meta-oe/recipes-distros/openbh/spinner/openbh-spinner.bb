@@ -1,5 +1,5 @@
-SUMMARY = "openatv-spinner"
-MAINTAINER = "ATV Team"
+SUMMARY = "openbh-spinner"
+MAINTAINER = "BlackHole Team"
 SECTION = "base"
 LICENSE = "proprietary"
 PACKAGE_ARCH = "all"

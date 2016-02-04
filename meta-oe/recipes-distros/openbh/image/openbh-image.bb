@@ -11,7 +11,6 @@ PR = "r${DATETIME}"
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
 IMAGE_INSTALL = "openbh-base \
-    ${@base_contains("MACHINE_FEATURES", "dvbc-only", "", "enigma2-plugin-settings-defaultsat", d)} \
     ${@base_contains("MACHINE_FEATURES", "singlecore", "", \
     " \
     packagegroup-base-smbfs-client \

@@ -15,6 +15,8 @@ RDEPENDS_${PN} = "\
     openbh-enigma2 \
     openbh-bootlogo \
     openbh-spinner \
+    blackhole-base \
+    blackholesocker \
     openssh-sftp-server \
     ntfs-3g \
     hddtemp \

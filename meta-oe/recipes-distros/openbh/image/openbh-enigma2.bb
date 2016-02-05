@@ -41,4 +41,10 @@ RRECOMMENDS_${PN} = " \
     "
 
 RRECOMMENDS_${PN}_append_wetekplay = " enigma2-plugin-skins-metrix-atv-fhd-icons enigma2-plugin-systemplugins-wirelesslan"
+RRECOMMENDS_${PN}_append_vusolo4k = "enigma2-plugin-skins-metrix-atv"
+RRECOMMENDS_${PN}_append_vuduo2 = "enigma2-plugin-skins-metrix-atv"
+RRECOMMENDS_${PN}_append_vusolo2 = "enigma2-plugin-skins-metrix-atv"
+RRECOMMENDS_${PN}_append_vusolose = "enigma2-plugin-skins-metrix-atv"
+RRECOMMENDS_${PN}_append_vuzero = "enigma2-plugin-skins-metrix-atv"
+RRECOMMENDS_${PN}_append_vuultimo = "enigma2-plugin-skins-metrix-atv"
 

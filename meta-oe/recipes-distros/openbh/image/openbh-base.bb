@@ -17,6 +17,7 @@ RDEPENDS_${PN} = "\
     openbh-spinner \
     blackhole-base \
     blackholesocker \
+    mc \
     openssh-sftp-server \
     ntfs-3g \
     hddtemp \

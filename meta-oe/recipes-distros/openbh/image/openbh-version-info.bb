@@ -1,8 +1,8 @@
-SUMMARY = "OpenATV version info"
+SUMMARY = "OpenBH version info"
 SECTION = "base"
 PRIORITY = "required"
 LICENSE = "proprietary"
-MAINTAINER = "OpenATV"
+MAINTAINER = "Blackhole"
 
 require conf/license/license-gplv2.inc
 
@@ -10,7 +10,7 @@ PV = "${IMAGE_VERSION}"
 PR = "${BUILD_VERSION}"
 PACKAGE_ARCH = "${MACHINEBUILD}"
 
-URL = "http://www.opena.tv"
+URL = "http://www.vuplus-community.net"
 
 S = "${WORKDIR}"
 
@@ -31,9 +31,9 @@ do_install() {
     echo "version=${IMAGE_VERSION}" >> ${D}/etc/image-version
     echo "build=${BUILD_VERSION}" >> ${D}/etc/image-version
     echo "date=${DATETIME}" >> ${D}/etc/image-version
-    echo "comment=openATV" >> ${D}/etc/image-version
+    echo "comment=openBH" >> ${D}/etc/image-version
     echo "target=9" >> ${D}/etc/image-version
-    echo "creator=openATV" >> ${D}/etc/image-version
+    echo "creator=BlackHole" >> ${D}/etc/image-version
     echo "url=${URL}" >> ${D}/etc/image-version
     echo "catalog=${URL}" >> ${D}/etc/image-version
     echo "${MACHINE}" > ${D}/etc/model

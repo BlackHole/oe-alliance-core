@@ -5,7 +5,7 @@ MAINTAINER = "Black Hole team"
 
 require conf/license/license-gplv2.inc
 
-PR = "r0"
+PR = "r1"
 PV = "0.1"
 
 BRANCH = "master"
@@ -20,7 +20,7 @@ S2 = "${WORKDIR}/build"
 inherit autotools update-rc.d
 
 INITSCRIPT_NAME = "${PN}"
-INITSCRIPT_PARAMS = "defaults"
+INITSCRIPT_PARAMS = "defaults 60"
 
 FILES_${PN} = "/"
 

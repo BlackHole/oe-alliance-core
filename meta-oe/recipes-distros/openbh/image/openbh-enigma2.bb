@@ -29,6 +29,14 @@ RRECOMMENDS_${PN} = " \
     enigma2-plugin-systemplugins-softwaremanager \
     enigma2-plugin-systemplugins-hotplug \
     enigma2-plugin-extensions-mediaplayer \
+    enigma2-plugin-systemplugins-osdpositionsetup \
+    enigma2-plugin-systemplugins-osd3dsetup \
+    enigma2-plugin-systemplugins-crossepg \
+	enigma2-plugin-extensions-dlnabrowser \
+	enigma2-plugin-extensions-dlnaserver \
+	enigma2-plugin-extensions-xmltvimport \
+	enigma2-plugin-extensions-epgsearch \
+	enigma2-plugin-extensions-epgimportfilter \
     ${@base_contains("MACHINE_FEATURES", "smallflash", "", "enigma2-plugin-extensions-enhancedmoviecenter", d)} \
     ${@base_contains("MACHINE_FEATURES", "dreamboxv1", "enigma2-plugin-extensions-dflash mtd-utils-jffs2", "", d)} \
     ${@base_contains("MACHINE_FEATURES", "dreamboxv2", "enigma2-plugin-extensions-dbackup", "", d)} \

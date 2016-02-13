@@ -8,7 +8,7 @@ inherit gitpkgv
 SRCREV = "${AUTOREV}"
 PV = "1.0+git${SRCPV}"
 PKGV = "1.0+git${GITPKGV}"
-PR = "r28"
+PR = "r29"
 
 SRC_URI = "git://github.com/oe-alliance/XMTV-Import.git;protocol=git"
 
@@ -20,13 +20,13 @@ DEPENDS = "python"
 RDEPENDS_${PN} = "python-compression python-shell"
 PACKAGES = "${PN} ${PN}-dbg"
 
-FILES_${PN} = "/usr/lib/enigma2/python/Plugins/Extensions/EPGImport/dreamcrc.so"
-FILES_${PN}-dbg = "/usr/lib/enigma2/python/Plugins/Extensions/EPGImport/.debug /usr/src/debug"
+FILES_${PN} = "/usr/lib/enigma2/python/Plugins/Extensions/XMLTVImport/dreamcrc.so"
+FILES_${PN}-dbg = "/usr/lib/enigma2/python/Plugins/Extensions/XMLTVImport/.debug /usr/src/debug"
 
 do_install_append() {
     # silly hacky me, this could be done by distutils, but i can't figure it out...
-    install -d ${D}/usr/lib/enigma2/python/Plugins/Extensions/EPGImport
-    mv ${D}/usr/lib/python*/site-packages/*.so ${D}/usr/lib/enigma2/python/Plugins/Extensions/EPGImport
+    install -d ${D}/usr/lib/enigma2/python/Plugins/Extensions/XMLTVImport
+    mv ${D}/usr/lib/python*/site-packages/*.so ${D}/usr/lib/enigma2/python/Plugins/Extensions/XMLTVImport
     rm -rf ${D}/usr/lib/python*/site-packages
     rm -rf ${D}/usr/lib/python2.7
 }

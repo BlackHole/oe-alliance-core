@@ -29,4 +29,5 @@ RDEPENDS_${PN} = "\
     packagegroup-base-smbfs-client \
     ${@base_contains("MACHINE_FEATURES", "dreambox", "", "ofgwrite", d)} \
     bash \
+    libcrypto-compat-0.9.7 \
     "

@@ -19,6 +19,7 @@ RDEPENDS_${PN} = "\
     blackholesocker \
     inadyn \
     mc \
+    openvpn \
     openssh-sftp-server \
     ntfs-3g \
     hddtemp \

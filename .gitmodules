@@ -1,3 +1,6 @@
 [submodule "meta-oe/recipes-oe-alliance/enigma2-plugins/e2openplugins"]
 	path = meta-oe/recipes-oe-alliance/enigma2-plugins/e2openplugins
 	url = git://github.com/oe-alliance/e2openplugins.git
+[submodule "meta-oe/recipes-kodi"]
+	path = meta-oe/recipes-kodi
+	url = https://github.com/mx3L/recipes-kodi.git

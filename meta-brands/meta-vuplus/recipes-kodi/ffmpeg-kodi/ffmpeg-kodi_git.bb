@@ -8,6 +8,8 @@ LIC_FILES_CHKSUM = "file://LICENSE.md;md5=4e0e4c9534db149e6b733ea75e421da7"
 
 PR = "r1"
 
+RPROVIDES_${PN} += "libav "
+
 inherit autotools pkgconfig
 
 SRC_URI = "https://github.com/xbmc/FFmpeg/archive/2.6.4-Isengard.tar.gz"

@@ -47,6 +47,8 @@ RRECOMMENDS_${PN} = " \
     ${@base_contains("MACHINE_FEATURES", "grautec", "enigma2-plugin-extensions-grautec", "", d)} \
     ${@base_contains("MACHINE_FEATURES", "chromiumos", "enigma2-plugin-extensions-chromium", "", d)} \
     enigma2-plugin-extensions-openmultiboot \
+    ${@base_contains("MACHINE_FEATURES", "xbmc", "enigma2-plugin-extensions-kodi", "", d)} \
+    ${@base_contains("MACHINE_FEATURES", "xbmc", "xbmc", "", d)} \
     "
 
 RRECOMMENDS_${PN}_append_wetekplay = " enigma2-plugin-skins-metrix-atv-fhd-icons enigma2-plugin-systemplugins-wirelesslan"

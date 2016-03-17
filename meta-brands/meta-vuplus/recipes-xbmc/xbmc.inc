@@ -136,7 +136,7 @@ do_package_qa(){
 
 FILES_${PN} += "${datadir}/xsessions ${datadir}/icons"
 FILES_${PN} += "/usr/bin /usr/share /usr/lib"
-FILES_${PN}-dbg += "${libdir}/xbmc/.debug ${libdir}/xbmc/*/.debug ${libdir}/xbmc/*/*/.debug ${libdir}/xbmc/*/*/*/.debug"
+FILES_${PN}-dbg += "${libdir}/kodi/.debug ${libdir}/kodi/*/.debug ${libdir}/kodi/*/*/.debug ${libdir}/kodi/*/*/*/.debug"
 
 # xbmc uses some kind of dlopen() method for libcec so we need to add it manually
 RRECOMMENDS_${PN}_append = " libcec \

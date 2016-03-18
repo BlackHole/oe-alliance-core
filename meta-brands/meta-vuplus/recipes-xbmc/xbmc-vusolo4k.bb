@@ -3,7 +3,7 @@ require xbmc.inc
 COMPATIBLE_MACHINE = "^(vusolo4k)$"
 
 BUILD_PR = "r0"
-GLARCH = ""
+GLARCH = "-arm"
 GLPR = "20150424_p0"
 
 EXTRA_OECONF += " --with-platform=dvbboxarm "

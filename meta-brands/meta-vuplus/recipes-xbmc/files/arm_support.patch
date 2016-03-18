@@ -1,0 +1,324 @@
+diff --git a/Makefile.in b/Makefile.in
+index ccd6cda..0b13bc7 100644
+--- a/Makefile.in
++++ b/Makefile.in
+@@ -307,9 +307,9 @@ CHECK_LIBS = xbmc/filesystem/test/filesystemTest.a \
+              xbmc/threads/test/threadTest.a \
+              xbmc/interfaces/python/test/pythonSwigTest.a \
+              xbmc/test/xbmc-test.a
+-ifeq ($(or $(findstring mips,@ARCH@)),)
+-CHECK_LIBS+=xbmc/cores/AudioEngine/Sinks/test/AESinkTest.a
+-endif
++#ifeq ($(or $(findstring mips,@ARCH@)),)
++#CHECK_LIBS+=xbmc/cores/AudioEngine/Sinks/test/AESinkTest.a
++#endif
+ 
+ ifeq (@USE_WAYLAND@,1)
+ CHECK_LIBS += xbmc/windowing/tests/wayland/test_wayland.a
+@@ -544,10 +544,8 @@ xbmc.bin: $(OBJSXBMC) $(DYNOBJSXBMC) $(NWAOBJSXBMC) $(MAINOBJS)
+ 
+ ifeq ($(findstring osx,@ARCH@), osx)
+ 	$(SILENT_LD) $(CXX) $(LDFLAGS) -o xbmc.bin $(MAINOBJS) -Wl,-all_load,-ObjC $(MAINOBJS) $(DYNOBJSXBMC) $(NWAOBJSXBMC) $(OBJSXBMC) $(LIBS) -rdynamic
+-else ifeq ($(findstring mips,@ARCH@), mips) # oskwon
+-	$(SILENT_LD) $(CXX) $(CXXFLAGS) $(LDFLAGS) -o xbmc.bin $(MAINOBJS) -Wl,--start-group $(MAINOBJS) $(DYNOBJSXBMC) $(OBJSXBMC) -Wl,--end-group $(NWAOBJSXBMC) $(LIBS) -rdynamic xbmc/windowing/egl/gles_init.a -ldvb_base -lnxpl -ldvb_client
+ else
+-	$(SILENT_LD) $(CXX) $(CXXFLAGS) $(LDFLAGS) -o xbmc.bin $(MAINOBJS) -Wl,--start-group $(MAINOBJS) $(DYNOBJSXBMC) $(OBJSXBMC) -Wl,--end-group $(NWAOBJSXBMC) $(LIBS) -rdynamic
++	$(SILENT_LD) $(CXX) $(CXXFLAGS) $(LDFLAGS) -o xbmc.bin $(MAINOBJS) -Wl,--start-group $(MAINOBJS) $(DYNOBJSXBMC) $(OBJSXBMC) -Wl,--end-group $(NWAOBJSXBMC) $(LIBS) -rdynamic xbmc/windowing/egl/gles_init.a -ldvb_base -lnxpl -ldvb_client
+ endif
+ 
+ xbmc-xrandr: xbmc-xrandr.c
+diff --git a/addons/library.xbmc.addon/libXBMC_addon.h b/addons/library.xbmc.addon/libXBMC_addon.h
+index 126e2c3..b88d4fe 100644
+--- a/addons/library.xbmc.addon/libXBMC_addon.h
++++ b/addons/library.xbmc.addon/libXBMC_addon.h
+@@ -57,6 +57,8 @@
+ #else
+ #define ADDON_HELPER_ARCH       "mipsel-linux"
+ #endif
++#elif defined(TARGET_DVBBOXARM) // oskwon
++#define ADDON_HELPER_ARCH       "arm"
+ #else
+ #define ADDON_HELPER_ARCH       "i486-linux"
+ #endif
+diff --git a/configure.in b/configure.in
+index d18c2ab..055c670 100644
+--- a/configure.in
++++ b/configure.in
+@@ -698,7 +698,8 @@ case $host in
+      use_sdl=no
+      use_x11=no
+      use_wayland=no
+-     use_static_ffmpeg=yes
++#oskwon : yes -> no
++     use_static_ffmpeg=no
+      ;;
+   arm*-*linux-android*)
+      target_platform=target_android
+@@ -782,6 +783,24 @@ case $use_platform in
+      CFLAGS="$CFLAGS"
+      CXXFLAGS="$CXXFLAGS"
+      ;;
++# oskwon
++  dvbboxarm)
++     target_platform=target_dvbbox
++     ARCH="arm"
++     use_arch="arm"
++     ffmpeg_target_os=linux
++     use_joystick=no
++     use_gles=yes
++     use_sdl=no
++     use_x11=no
++     use_alsa="no"
++     use_wayland=no
++     use_static_ffmpeg=no
++     AC_DEFINE(HAS_EGLGLES, [1], [Define if supporting EGL based GLES Framebuffer])
++     USE_DVBBOXARM_EGL=1
++     CFLAGS="$CFLAGS"
++     CXXFLAGS="$CXXFLAGS"
++     ;;
+ esac
+ 
+ XBMC_SETUP_ARCH_DEFINES()
+@@ -2713,6 +2732,7 @@ AC_SUBST(HOGWEED_ALL_LIBS)
+ AC_SUBST(VORBISENC_ALL_LIBS)
+ # oskwon
+ AC_SUBST(USE_DVBBOX_EGL)
++AC_SUBST(USE_DVBBOXARM_EGL)
+ 
+ # pushd and popd are not available in other shells besides bash, so implement
+ # our own pushd/popd functions
+diff --git a/m4/xbmc_arch.m4 b/m4/xbmc_arch.m4
+index c3fc7ee..b7b2a31 100644
+--- a/m4/xbmc_arch.m4
++++ b/m4/xbmc_arch.m4
+@@ -55,5 +55,9 @@ case $use_platform in
+   dvbbox)
+      AC_SUBST(ARCH_DEFINES, "-DTARGET_POSIX -DTARGET_LINUX -D_LINUX -D_MIPSEL -DTARGET_DVBBOX")
+      ;;
++# oskwon
++  dvbboxarm)
++     AC_SUBST(ARCH_DEFINES, "-DTARGET_POSIX -DTARGET_LINUX -D_LINUX -DTARGET_DVBBOXARM")
++     ;;
+ esac
+ ])
+diff --git a/xbmc/Application.cpp b/xbmc/Application.cpp
+index 7583b20..ab8b79f 100644
+--- a/xbmc/Application.cpp
++++ b/xbmc/Application.cpp
+@@ -2438,7 +2438,7 @@ bool CApplication::OnKey(const CKey& key)
+           useKeyboard = true;
+       }
+     }
+-#if defined(TARGET_DVBBOX) // oskwon
++#if defined(TARGET_DVBBOX) || defined(TARGET_DVBBOXARM) // oskwon
+ //    printf("----->> %x\n", key.GetVKey());
+     switch(key.GetVKey())
+     {
+diff --git a/xbmc/cores/AudioEngine/AEFactory.cpp b/xbmc/cores/AudioEngine/AEFactory.cpp
+index 0450415..454a98b 100644
+--- a/xbmc/cores/AudioEngine/AEFactory.cpp
++++ b/xbmc/cores/AudioEngine/AEFactory.cpp
+@@ -41,7 +41,7 @@ IAE *CAEFactory::GetEngine()
+ bool CAEFactory::LoadEngine()
+ {
+ // oskwon
+-#if defined(TARGET_DVBBOX)
++#if defined(TARGET_DVBBOX) || defined(TARGET_DVBBOXARM)
+   return true;
+ #else
+   return CAEFactory::LoadEngine(AE_ENGINE_ACTIVE);
+@@ -84,7 +84,7 @@ void CAEFactory::UnLoadEngine()
+ bool CAEFactory::StartEngine()
+ {
+ // oskwon
+-#if defined(TARGET_DVBBOX)
++#if defined(TARGET_DVBBOX) || defined(TARGET_DVBBOXARM)
+   return true;
+ #else
+   if (!AE)
+diff --git a/xbmc/input/linux/LinuxInputDevices.cpp b/xbmc/input/linux/LinuxInputDevices.cpp
+index 90de1b6..8269028 100644
+--- a/xbmc/input/linux/LinuxInputDevices.cpp
++++ b/xbmc/input/linux/LinuxInputDevices.cpp
+@@ -256,7 +256,7 @@ KeyMap keyMap[] = {
+   { 378               , XBMCK_RIGHT       }, // right
+   { 381               , XBMCK_UP          }, // up
+   { 366               , XBMCK_DOWN        }, // down
+-#ifdef TARGET_DVBBOX // oskwon
++#if defined(TARGET_DVBBOX) || defined(TARGET_DVBBOXARM) // oskwon
+   { KEY_OK            , XBMCK_RETURN      }, // Ok
+   { KEY_EXIT          , XBMCK_ESCAPE      }, // EXIT
+ #endif /*TARGET_DVBBOX*/
+@@ -535,7 +535,7 @@ bool CLinuxInputDevice::KeyEvent(const struct input_event& levt, XBMC_Event& dev
+     entry.code = code;
+ 
+ 	int keyMapValue;
+-#if defined(TARGET_DVBBOX) // oskwon
++#if defined(TARGET_DVBBOX) || defined(TARGET_DVBBOXARM) // oskwon
+ 	if (devt.key.keysym.mod & (XBMCKMOD_SHIFT | XBMCKMOD_CAPS)) keyMapValue = entry.shift;
+ 	else if (devt.key.keysym.mod & XBMCKMOD_ALT) keyMapValue = entry.alt;
+ 	else if (devt.key.keysym.mod & XBMCKMOD_META) keyMapValue = entry.altShift;
+@@ -727,7 +727,7 @@ XBMC_Event CLinuxInputDevice::ReadEvent()
+       break;
+     }
+ 
+-#ifdef TARGET_DVBBOX // oskwon
++#if defined(TARGET_DVBBOX) || defined(TARGET_DVBBOXARM) // oskwon
+     if (access("/tmp/playing.lock", F_OK) == 0) {
+     	break;
+     }
+@@ -977,7 +977,7 @@ bool CLinuxInputDevices::CheckDevice(const char *device)
+   if (fd < 0)
+     return false;
+ 
+-#if !defined(TARGET_DVBBOX) && !VKEY_ENABLE // oskwon
++#if !defined(TARGET_DVBBOX) && !defined(TARGET_DVBBOXARM) && !VKEY_ENABLE // oskwon
+   if (ioctl(fd, EVIOCGRAB, 1) && errno != EINVAL)
+   {
+     close(fd);
+@@ -1078,7 +1078,7 @@ bool CLinuxInputDevice::Open()
+     return false;
+   }
+ 
+-#if !defined(TARGET_DVBBOX) && !VKEY_ENABLE // oskwon
++#if !defined(TARGET_DVBBOX) && !defined(TARGET_DVBBOXARM) && !VKEY_ENABLE // oskwon
+   /* grab device */
+   ret = ioctl(fd, EVIOCGRAB, 1);
+   if (ret && errno != EINVAL)
+@@ -1154,7 +1154,7 @@ bool CLinuxInputDevice::Open()
+   return true;
+ 
+ driver_open_device_error:
+-#if !defined(TARGET_DVBBOX) && !VKEY_ENABLE // oskwon
++#if !defined(TARGET_DVBBOX) && !defined(TARGET_DVBBOXARM) && !VKEY_ENABLE // oskwon
+   ioctl(fd, EVIOCGRAB, 0);
+ #endif /*TARGET_DVBBOX*/
+   if (m_vt_fd >= 0)
+@@ -1230,7 +1230,7 @@ bool CLinuxInputDevice::GetKeymapEntry(KeymapEntry& entry)
+  */
+ void CLinuxInputDevice::Close()
+ {
+-#if !defined(TARGET_DVBBOX) && !VKEY_ENABLE // oskwon
++#if !defined(TARGET_DVBBOX) && !defined(TARGET_DVBBOXARM) && !VKEY_ENABLE // oskwon
+   /* release device */
+   ioctl(m_fd, EVIOCGRAB, 0);
+ #endif /*TARGET_DVBBOX*/
+diff --git a/xbmc/system.h b/xbmc/system.h
+index 3ab49b8..b190ff9 100644
+--- a/xbmc/system.h
++++ b/xbmc/system.h
+@@ -182,7 +182,7 @@
+ #define HAS_LINUX_EVENTS
+ #endif
+ #define HAS_LINUX_NETWORK
+-#if !defined(TARGET_DVBBOX) // oskwon
++#if !defined(TARGET_DVBBOX) && !defined(TARGET_DVBBOXARM) // oskwon
+ #define HAS_LIRC
+ #endif /*TARGET_DVBBOX*/
+ #ifdef HAVE_LIBPULSE
+diff --git a/xbmc/utils/CPUInfo.cpp b/xbmc/utils/CPUInfo.cpp
+index cd5e179..199c74c 100644
+--- a/xbmc/utils/CPUInfo.cpp
++++ b/xbmc/utils/CPUInfo.cpp
+@@ -241,7 +241,7 @@ CCPUInfo::CCPUInfo(void)
+     m_fProcTemperature = fopen("/sys/class/hwmon/hwmon0/temp1_input", "r");
+   if (m_fProcTemperature == NULL)   
+     m_fProcTemperature = fopen("/sys/class/thermal/thermal_zone0/temp", "r");  // On Raspberry PIs
+-#ifdef TARGET_DVBBOX // oskwon
++#if defined(TARGET_DVBBOX) || defined(TARGET_DVBBOXARM) // oskwon
+   m_fCPUFreq = fopen ("/sys/devices/platform/brcmstb/cpu_khz", "r");
+ #else
+   m_fCPUFreq = fopen ("/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq", "r");
+@@ -289,7 +289,7 @@ CCPUInfo::CCPUInfo(void)
+           StringUtils::Trim(m_cores[nCurrId].m_strModel);
+         }
+       }
+-#ifdef TARGET_DVBBOX // oskwon
++#if defined(TARGET_DVBBOX) || defined(TARGET_DVBBOXARM) // oskwon
+       else if (strncmp(buffer, "system type", strlen("system type"))==0)
+       {
+         char *needle = strstr(buffer, ":");
+diff --git a/xbmc/utils/MathUtils.h b/xbmc/utils/MathUtils.h
+index 9a6fb09..86fa892 100644
+--- a/xbmc/utils/MathUtils.h
++++ b/xbmc/utils/MathUtils.h
+@@ -36,7 +36,7 @@
+     defined(__powerpc__) || \
+    (defined(TARGET_DARWIN_IOS) && defined(__llvm__)) || \
+    (defined(TARGET_ANDROID) && defined(__arm__)) || \
+-    defined(TARGET_RASPBERRY_PI) || defined(TARGET_DVBBOX) // oskwon
++    defined(TARGET_RASPBERRY_PI) || defined(TARGET_DVBBOX) || defined(TARGET_DVBBOXARM)// oskwon
+   #define DISABLE_MATHUTILS_ASM_ROUND_INT
+ #endif
+ 
+@@ -44,7 +44,7 @@
+     defined(__powerpc__) || \
+    (defined(TARGET_DARWIN) && defined(__llvm__)) || \
+    (defined(TARGET_ANDROID) && defined(__arm__)) || \
+-    defined(TARGET_RASPBERRY_PI) || defined(TARGET_DVBBOX) // oskwon
++    defined(TARGET_RASPBERRY_PI) || defined(TARGET_DVBBOX) || defined(TARGET_DVBBOXARM) // oskwon
+   #define DISABLE_MATHUTILS_ASM_TRUNCATE_INT
+ #endif
+ 
+diff --git a/xbmc/utils/fastmemcpy.h b/xbmc/utils/fastmemcpy.h
+index 9a2b0c3..ef4699a 100644
+--- a/xbmc/utils/fastmemcpy.h
++++ b/xbmc/utils/fastmemcpy.h
+@@ -23,7 +23,7 @@
+ extern "C" {
+ #endif
+ 
+-#if !defined(TARGET_WINDOWS) && !defined(__ppc__) && !defined(__powerpc__) && !defined(TARGET_ANDROID) && !defined(TARGET_DARWIN_IOS) && !defined(TARGET_DVBBOX)
++#if !defined(TARGET_WINDOWS) && !defined(__ppc__) && !defined(__powerpc__) && !defined(TARGET_ANDROID) && !defined(TARGET_DARWIN_IOS) && !defined(TARGET_DVBBOX) && !defined(TARGET_DVBBOXARM)
+ void * fast_memcpy(void * to, const void * from, size_t len);
+ //#define fast_memcpy memcpy
+ #else
+diff --git a/xbmc/windowing/egl/EGLWrapper.cpp b/xbmc/windowing/egl/EGLWrapper.cpp
+index d5bfac4..7b7e2e7 100644
+--- a/xbmc/windowing/egl/EGLWrapper.cpp
++++ b/xbmc/windowing/egl/EGLWrapper.cpp
+@@ -29,7 +29,7 @@
+ #include "EGLNativeTypeWayland.h"
+ #include "EGLWrapper.h"
+ 
+-#if defined(TARGET_DVBBOX) // oskwon
++#if defined(TARGET_DVBBOX) || defined(TARGET_DVBBOXARM) // oskwon
+ #	include "EGLNativeTypeDvbBox.h"
+ #endif
+ 
+@@ -87,7 +87,7 @@ bool CEGLWrapper::Initialize(const std::string &implementation)
+   if ((nativeGuess = CreateEGLNativeType<CEGLNativeTypeWayland>(implementation)) ||
+       (nativeGuess = CreateEGLNativeType<CEGLNativeTypeAndroid>(implementation)) ||
+       (nativeGuess = CreateEGLNativeType<CEGLNativeTypeAmlogic>(implementation)) ||
+-#if defined(TARGET_DVBBOX) // oskwon
++#if defined(TARGET_DVBBOX) || defined(TARGET_DVBBOXARM)// oskwon
+       (nativeGuess = CreateEGLNativeType<CEGLNativeTypeDvbBox>(implementation)) ||
+ #endif
+       (nativeGuess = CreateEGLNativeType<CEGLNativeTypeRaspberryPI>(implementation)))
+diff --git a/xbmc/windowing/egl/Makefile.in b/xbmc/windowing/egl/Makefile.in
+index 9a0c77f..d556cc3 100644
+--- a/xbmc/windowing/egl/Makefile.in
++++ b/xbmc/windowing/egl/Makefile.in
+@@ -27,6 +27,9 @@ endif
+ ifeq (@USE_DVBBOX_EGL@,1)
+ SRCS+= EGLNativeTypeDvbBox.cpp
+ endif
++ifeq (@USE_DVBBOXARM_EGL@,1)
++SRCS+= EGLNativeTypeDvbBox.cpp
++endif
+ 
+ LIB = windowing_egl.a
+ 
+diff --git a/xbmc/xbmc.cpp b/xbmc/xbmc.cpp
+index 7c62652..4f29957 100644
+--- a/xbmc/xbmc.cpp
++++ b/xbmc/xbmc.cpp
+@@ -78,7 +78,7 @@ extern "C" int XBMC_Run(bool renderGUI)
+   g_RBP.Deinitialize();
+ #endif
+ 
+-#ifdef TARGET_DVBBOX // oskwon
++#if defined(TARGET_DVBBOX) || defined(TARGET_DVBBOXARM) // oskwon
+   system("xbmc.helper --stop");
+ #endif /*TARGET_DVBBOX*/
+ 

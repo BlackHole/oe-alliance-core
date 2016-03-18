@@ -60,6 +60,8 @@ SRC_URI = "git://github.com/mx3L/xbmc.git;protocol=git;branch=vu_kodi_15_2 \
 	http://archive.vuplus.com/download/build_support/xbmc-support_${GLPR}${GLARCH}.tar.gz;name=xbmc-support \
 "
 
+SRC_URI_append_vusolo4k = " file://arm_support.patch"
+
 inherit autotools-brokensep gettext python-dir
 
 S = "${WORKDIR}/git"

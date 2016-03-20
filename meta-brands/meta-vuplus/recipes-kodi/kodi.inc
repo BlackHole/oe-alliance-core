@@ -5,8 +5,8 @@ LIC_FILES_CHKSUM = "file://LICENSE.GPL;md5=930e2a5f63425d8dd72dbd7391c43c46"
 
 DEPENDS = "vuplus-libgles-${MACHINE} libxslt libusb1 libcec libplist expat yajl gperf-native fribidi mpeg2dec samba fontconfig curl python libass libmodplug libmicrohttpd wavpack libmms cmake-native libsdl-image mysql5 sqlite3 libmms faad2 libcdio libpcre boost lzo enca avahi libsamplerate0  bzip2 virtual/libsdl jasper zip-native zlib libtinyxml libtinyxml-native taglib libbluray libshairport librtmp zlib libnfs libxslt libsquish jsonschemabuilder-native ffmpeg-kodi"
 
-PROVIDES += "xbmc"
-RPROVIDES_${PN} += "xbmc"
+PROVIDES += "virtual/kodi"
+RPROVIDES_${PN} += "virtual/kodi"
 
 RDEPENDS_${PN} = "python"
 RDEPENDS_${PN} += "\

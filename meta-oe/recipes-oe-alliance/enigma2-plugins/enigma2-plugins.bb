@@ -70,7 +70,7 @@ DEPENDS = "enigma2 \
     libcddb \
     nmap \
     libshowiframe \
-    ffmpeg-kodi \
+    libav \
     "
 
 python populate_packages_prepend() {

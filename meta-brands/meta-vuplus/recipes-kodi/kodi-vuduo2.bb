@@ -1,4 +1,4 @@
-require xbmc.inc
+require kodi.inc
 
 COMPATIBLE_MACHINE = "^(vuduo2)$"
 

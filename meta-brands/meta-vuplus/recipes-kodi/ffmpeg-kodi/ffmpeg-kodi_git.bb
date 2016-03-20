@@ -66,7 +66,7 @@ do_compile() {
 
 do_install() {
    cd ${S}
-   make -j 2 BUILDDIR=${BUILDDIR} DESTDIR=${D} install
+   make -j 2 BUILDDIR=${BUILDDIR} DESTDIR=${D} install-progs
 }
 
 FILES_${PN} += "/"

@@ -8,8 +8,6 @@ LIC_FILES_CHKSUM = "file://LICENSE.md;md5=4e0e4c9534db149e6b733ea75e421da7"
 
 PR = "r1"
 
-RPROVIDES_${PN} += "libav "
-
 inherit autotools pkgconfig
 
 SRC_URI = "https://github.com/xbmc/FFmpeg/archive/2.6.4-Isengard.tar.gz"
@@ -23,6 +21,8 @@ EXTRA_OECONF = " \
         --extra-cflags='-fdata-sections -ffunction-sections' \
         --extra-ldflags='-Wl,--gc-sections' \
         --prefix=${prefix} \
+        --incdir=${prefix}/include/ffmpeg \
+        --build-suffix=-ffmpeg \
         --arch=${TARGET_ARCH} \
         --cross-prefix=${TARGET_PREFIX} \
         --target-os=linux \
@@ -66,7 +66,7 @@ do_compile() {
 
 do_install() {
    cd ${S}
-   make -j 2 BUILDDIR=${BUILDDIR} DESTDIR=${D} install-progs
+   make -j 2 BUILDDIR=${BUILDDIR} DESTDIR=${D} install
 }
 
 FILES_${PN} += "/"

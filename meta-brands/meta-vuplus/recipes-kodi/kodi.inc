@@ -58,6 +58,7 @@ PR = "${BUILD_PR}_${GLPR}_${SRCREV}"
 #SRC_URI = "git://code.vuplus.com/git/xbmc.git;protocol=http;branch=${BRANCH};tag=${SRCREV}
 SRC_URI = "git://github.com/mx3L/xbmc.git;protocol=git;branch=vu_kodi_15_2 \
 	http://archive.vuplus.com/download/build_support/xbmc-support_${GLPR}${GLARCH}.tar.gz;name=xbmc-support \
+	file://ffmpeg-libs.patch \
 "
 
 SRC_URI_append_vusolo4k = " file://arm_support.patch"

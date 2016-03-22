@@ -18,7 +18,7 @@ SRC_URI = "cvs://anonymous@minidlna.cvs.sourceforge.net/cvsroot/minidlna;module=
 
 S = "${WORKDIR}/${PN}"
 
-inherit autotools-brokensep gettext update-rc.d pkgconfig
+inherit autotools-brokensep gettext update-rc.d
 
 PACKAGES =+ "${PN}-utils"
 
@@ -28,8 +28,6 @@ CONFFILES_${PN} = "${sysconfdir}/minidlna.conf"
 
 INITSCRIPT_NAME = "minidlna"
 INITSCRIPT_PARAMS = "defaults 20"
-
-export LIBS="-lavcodec -lswresample -lavutil -ltheoraenc -ltheoradec -lvorbisenc -lpthread -lbz2 -lz -lm  -lssl -lcrypto -llzma"
 
 do_install_append() {
     install -d ${D}${sysconfdir}

@@ -12,7 +12,7 @@ SRC_URI = "file://Ncam_Ci.sh file://StartBhCam file://Delete_all_Crashlogs.sh fi
 	file://delite.key file://server.crt file://server.key \
 	file://Netstat.sh file://Uptime.sh file://bp_swap"
 
-PR = "r8"
+PR = "r9"
 
 FILES_${PN} = "/"
 
@@ -62,7 +62,7 @@ do_install() {
 	install -m 0755 ${WORKDIR}/bp_swap ${D}/etc/init.d/bp_swap
 	
 	install -d ${D}/etc/rc3.d
-	ln -sf /etc/init.d/openvpn ${D}/etc/rc3.d/S40openvpn
+#	ln -sf /etc/init.d/openvpn ${D}/etc/rc3.d/S40openvpn
 	ln -sf /etc/init.d/bp_swap ${D}/etc/rc3.d/S40bp_swap
 
 	install -d ${D}/etc/rc4.d

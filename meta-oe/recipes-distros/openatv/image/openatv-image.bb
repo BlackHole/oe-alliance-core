@@ -1,8 +1,8 @@
-SUMMARY = "OpenBH Image"
+SUMMARY = "OpenATV Image"
 SECTION = "base"
 PRIORITY = "required"
 LICENSE = "proprietary"
-MAINTAINER = "BlackHole team"
+MAINTAINER = "openATV team"
 
 require conf/license/license-gplv2.inc
 
@@ -10,7 +10,7 @@ PV = "${IMAGE_VERSION}"
 PR = "r${DATETIME}"
 PACKAGE_ARCH = "${MACHINE_ARCH}"
 
-IMAGE_INSTALL = "openbh-base \
+IMAGE_INSTALL = "openatv-base \
     ${@base_contains("MACHINE_FEATURES", "dvbc-only", "", "enigma2-plugin-settings-defaultsat", d)} \
     ${@base_contains("MACHINE_FEATURES", "singlecore", "", \
     " \
@@ -21,7 +21,7 @@ IMAGE_INSTALL = "openbh-base \
     ", d)} \
     "
 
-export IMAGE_BASENAME = "openbh-image"
+export IMAGE_BASENAME = "openatv-image"
 IMAGE_LINGUAS = ""
 
 IMAGE_FEATURES += "package-management"
@@ -49,7 +49,7 @@ do_generate_nfo() {
     echo "Machine: ${MACHINE}" >> ${NFO}
     DATE=`date +%Y-%m-%d' '%H':'%M`
     echo "Date: ${DATE}" >> ${NFO}
-    echo "Issuer: openbh" >> ${NFO}
+    echo "Issuer: openATV" >> ${NFO}
     echo "Link: ${DISTRO_FEED_URI}" >> ${NFO}
     if [ "${DESC}" != "" ]; then
             echo "Description: ${DESC}" >> ${NFO}

@@ -12,9 +12,9 @@ inherit packagegroup
 
 RDEPENDS_${PN} = "\
     oe-alliance-base \
-    openbh-enigma2 \
-    openbh-bootlogo \
-    openbh-spinner \
+    openatv-enigma2 \
+    openatv-bootlogo \
+    openatv-spinner \
     openssh-sftp-server \
     ntfs-3g \
     hddtemp \

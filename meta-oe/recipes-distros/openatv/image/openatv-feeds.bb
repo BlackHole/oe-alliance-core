@@ -14,7 +14,7 @@ inherit packagegroup
 RRECOMMENDS_${PN} = "\
     oe-alliance-skins \
     enigma2-display-skins \
-    openbh-picons-meta \
+    openatv-picons-meta \
     enigma2-skins \
     enigma2-skins-openvix \
     enigma2-pliplugins \

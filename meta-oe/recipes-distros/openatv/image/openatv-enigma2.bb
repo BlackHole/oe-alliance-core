@@ -11,11 +11,11 @@ PR = "r54"
 
 inherit packagegroup
 
-DEPENDS = "enigma2-pliplugins openbh-feeds"
+DEPENDS = "enigma2-pliplugins openatv-feeds"
 
 RRECOMMENDS_${PN} = " \
     enigma2-skindefault \
-    openbh-version-info \
+    openatv-version-info \
     ${@base_contains("MACHINE_FEATURES", "smallflash", "", "enigma2-plugin-drivers-usbserial", d)} \
     enigma2-plugin-extensions-infopanel \
     enigma2-plugin-extensions-autotimer \

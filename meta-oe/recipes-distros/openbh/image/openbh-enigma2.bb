@@ -32,11 +32,11 @@ RRECOMMENDS_${PN} = " \
     enigma2-plugin-systemplugins-osdpositionsetup \
     enigma2-plugin-systemplugins-osd3dsetup \
     enigma2-plugin-systemplugins-crossepg \
-	enigma2-plugin-extensions-dlnabrowser \
-	enigma2-plugin-extensions-dlnaserver \
-	enigma2-plugin-extensions-xmltvimport \
-	enigma2-plugin-extensions-epgsearchpli \
-	enigma2-plugin-extensions-epgimportfilter \
+    enigma2-plugin-extensions-dlnabrowser \
+    enigma2-plugin-extensions-dlnaserver \
+    enigma2-plugin-extensions-xmltvimport \
+    enigma2-plugin-extensions-epgsearchpli \
+    enigma2-plugin-extensions-epgimportfilter \
     ${@base_contains("MACHINE_FEATURES", "smallflash", "", "enigma2-plugin-extensions-enhancedmoviecenter", d)} \
     ${@base_contains("MACHINE_FEATURES", "dreamboxv1", "enigma2-plugin-extensions-dflash mtd-utils-jffs2", "", d)} \
     ${@base_contains("MACHINE_FEATURES", "dreamboxv2", "enigma2-plugin-extensions-dbackup", "", d)} \
@@ -46,9 +46,8 @@ RRECOMMENDS_${PN} = " \
     ${@base_contains("MACHINE_FEATURES", "webkithbbtv", "webkit-hbbtv-browser", "", d)} \
     ${@base_contains("MACHINE_FEATURES", "grautec", "enigma2-plugin-extensions-grautec", "", d)} \
     ${@base_contains("MACHINE_FEATURES", "chromiumos", "enigma2-plugin-extensions-chromium", "", d)} \
-    enigma2-plugin-extensions-openmultiboot \
-    ${@base_contains("MACHINE_FEATURES", "xbmc", "enigma2-plugin-extensions-kodi", "", d)} \
-    ${@base_contains("MACHINE_FEATURES", "xbmc", "virtual/kodi", "", d)} \
+    ${@base_contains("MACHINE_FEATURES", "vukodi", "enigma2-plugin-extensions-kodi", "", d)} \
+    ${@base_contains("MACHINE_FEATURES", "omb", "enigma2-plugin-extensions-openmultiboot", "", d)} \
     "
 
 RRECOMMENDS_${PN}_append_wetekplay = " enigma2-plugin-skins-metrix-atv-fhd-icons enigma2-plugin-systemplugins-wirelesslan"

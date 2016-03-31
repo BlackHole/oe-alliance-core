@@ -18,7 +18,7 @@ inherit autotools-brokensep
 
 DEPENDS = "python xmltvimport-library"
 RDEPENDS_${PN} = "python-compression python-shell xmltvimport-library"
-RRECOMMENDS_${PN} = "xmltvimport-rytec"
+#RRECOMMENDS_${PN} = "xmltvimport-rytec"
 
 FILES_${PN} += "/usr/bin /etc"
 
